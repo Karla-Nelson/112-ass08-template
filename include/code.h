@@ -71,22 +71,24 @@
 
 /* TODO: write the prototypes for functions 1-9 here */
 
-create_abs_txt(filename, value)
-{
-    FILE *file;
-    file = fopen(filename, "wt");
-    if (file)
-    {
-        int x = 1;
-        fwrite(&x, abs(value), 1, file);
-    }
-    else
-        printf("Error");
-        return false;
-    
-    
-    return true;
-}
+create_abs_txt(char *filename, int value);
+
+create_fabs_txt(char *filename, double value);
+
+append_sqrt_txt(char *filename, double value);
+
+append_pow_txt(char *filename, double value, double exponent);
+
+create_ceil_floor_txt(filename, value);
+
+append_round_txt(filename, value);
+
+append_fmod_txt(filename, x, y);
+
+load_txt_values(filename, x, y);
+
+clear_file(filename);
+
 
 /* ========================= PART B: Binary mode ========================= */
 

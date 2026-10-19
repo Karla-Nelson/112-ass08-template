@@ -13,7 +13,11 @@
 
 int main(void)
 {
-    create_abs_txt("assignment.txt", (int)4);
+    create_abs_txt("assignment.txt", -4);
+    create_fabs_txt("assignment.txt", -4.5);
+    append_sqrt_txt("assignment.txt", 4);
+
+
     return 0;
 }
 

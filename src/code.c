@@ -51,7 +51,25 @@
  */
 // TODO
 
-create_abs_txt(filename, value)
+create_abs_txt(char *filename, int value)
+{
+
+    FILE *file = fopen(filename, "wt");
+    int n = abs(value);
+
+    if(file)
+    {
+        fprintf(file, "%d", n);;
+
+        fclose(file);
+    }
+    
+    else
+        printf("Error");
+        return 0;
+
+    return 1;
+};
 
 /*
  * 2. create_fabs_txt (returns bool; parameters: filename, double value)
@@ -60,6 +78,25 @@ create_abs_txt(filename, value)
  *    - Open mode: write (create / overwrite).
  */
 // TODO
+
+create_fabs_txt(char *filename, double value)
+{
+    FILE *file = fopen(filename, "wt");
+    double n = fabs(value);
+    
+    if(file)
+    {
+        fprintf(file, "%.2f", n);
+
+        fclose(file);
+    }
+    
+    else
+        printf("Error");
+        return 0;
+
+    return 1;
+};
 
 /*
  * 3. append_sqrt_txt (returns bool; parameters: filename, double value)
@@ -70,6 +107,34 @@ create_abs_txt(filename, value)
  */
 // TODO
 
+append_sqrt_txt(char *filename, double value)
+{
+    FILE *file;
+    file = fopen(filename, "at");
+    double n = sqrt(value);
+
+    if (value < 0)
+    {
+        printf("Invalid value");
+        return 0;
+    }
+
+    if (file)
+    {
+    
+        fprintf(file, " %.2f", n);
+
+        fclose(file);
+        
+    }
+    
+    else
+        printf("Error");
+        return 0;
+
+    return 1;
+};
+
 /*
  * 4. append_pow_txt (returns bool; parameters: filename, double base, double exponent)
  *    - Invalid input: base equal to zero AND exponent negative
@@ -79,6 +144,33 @@ create_abs_txt(filename, value)
  */
 // TODO
 
+append_pow_txt(char *filename, double value, double exponent) //ended here <---
+{
+    FILE *file;
+    file = fopen(filename, "at");
+    if (value == 0 && exponent == 0)
+    {
+        printf("Invalid input");
+        return false;
+    }
+
+    if (file)
+    {
+        int x = 1;
+        double y = sqrt(value);
+        fwrite(&x, y, 1, file);
+
+        fclose(filename);
+        
+    }
+    
+    else
+        printf("Error");
+        return false;
+
+    return true;
+};
+
 /*
  * 5. create_ceil_floor_txt (returns bool; parameters: filename, double value)
  *    - Open in WRITE mode (create / overwrite).
@@ -87,6 +179,28 @@ create_abs_txt(filename, value)
  *    - Success requires that both writes AND the close worked.
  */
 // TODO
+
+create_ceil_floor_txt(filename, value)
+{
+    FILE *file;
+    file = fopen(filename, "wt");
+    if (file)
+    {
+        double x = value;
+        fwrite(&x, ceil(x), 1, file);
+        fwrite(&x, floor(x), 1, file);
+
+
+        fclose(filename);
+        
+    }
+    
+    else
+        printf("Error");
+        return false;
+
+    return true;
+};
 
 /*
  * 6. append_round_txt (returns bool; parameters: filename, double value)
