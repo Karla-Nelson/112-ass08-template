@@ -5,6 +5,10 @@
 // I am fully aware of the consequences of academic dishonesty and agree to
 // abide by the university's academic integrity policy.";
 
+#include <stdbool.h>
+#ifndef CODE_H 
+#define CODE_H
+#endif
 
 /*
  * code.h - Assignment 8: File Access and Math Functions
@@ -67,6 +71,22 @@
 
 /* TODO: write the prototypes for functions 1-9 here */
 
+create_abs_txt(filename, value)
+{
+    FILE *file;
+    file = fopen(filename, "wt");
+    if (file)
+    {
+        int x = 1;
+        fwrite(&x, abs(value), 1, file);
+    }
+    else
+        printf("Error");
+        return false;
+    
+    
+    return true;
+}
 
 /* ========================= PART B: Binary mode ========================= */
 

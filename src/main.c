@@ -9,9 +9,11 @@
  */
 
 #include <stdio.h>
+#include "code.h"
 
 int main(void)
 {
-
+    create_abs_txt("assignment.txt", (int)4);
     return 0;
 }
+

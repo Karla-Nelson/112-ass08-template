@@ -11,6 +11,8 @@
 
 #include "code.h"
 #include <stdio.h>
+#include <stdlib.h> (for abs())
+#include <math.h> 
 
 /*
  * code.c - Assignment 8: File Access and Math Functions
@@ -48,6 +50,8 @@
  *    - Close the file and report success only if writing and closing worked.
  */
 // TODO
+
+create_abs_txt(filename, value)
 
 /*
  * 2. create_fabs_txt (returns bool; parameters: filename, double value)
