@@ -148,7 +148,7 @@ append_pow_txt(char *filename, double value, double exponent) //ended here <---
 {
     FILE *file;
     file = fopen(filename, "at");
-    if (value == 0 && exponent == 0)
+    if (value == 0 && exponent < 0)
     {
         printf("Invalid input");
         return false;
@@ -156,11 +156,11 @@ append_pow_txt(char *filename, double value, double exponent) //ended here <---
 
     if (file)
     {
-        int x = 1;
-        double y = sqrt(value);
-        fwrite(&x, y, 1, file);
+        double n = pow(value, exponent);
 
-        fclose(filename);
+        fprintf(file, " %.2f", n);
+
+        fclose(file);
         
     }
     
@@ -180,18 +180,21 @@ append_pow_txt(char *filename, double value, double exponent) //ended here <---
  */
 // TODO
 
-create_ceil_floor_txt(filename, value)
+create_ceil_floor_txt(char *filename, double value)
 {
     FILE *file;
     file = fopen(filename, "wt");
     if (file)
     {
-        double x = value;
-        fwrite(&x, ceil(x), 1, file);
-        fwrite(&x, floor(x), 1, file);
+        double n1 = ceil(value);
+        double n2 = floor(value);
+        
+
+        fprintf(file, " %.2f", n1);
+        fprintf(file, " %.2f", n2);
 
 
-        fclose(filename);
+        fclose(file);
         
     }
     
@@ -210,6 +213,28 @@ create_ceil_floor_txt(filename, value)
  */
 // TODO
 
+append_round_txt(char *filename, double value)
+{
+    FILE *file;
+    file = fopen(filename, "at");
+    if (file)
+    {
+        double n1 = round(value);
+        
+        fprintf(file, " %.2f", n1);
+
+
+        fclose(file);
+        
+    }
+    
+    else
+        printf("Error");
+        return false;
+
+    return true;
+};
+
 /*
  * 7. append_fmod_txt (returns bool; parameters: filename, double x, double y)
  *    - Invalid input: y equal to zero -> return false, do not touch the file.
@@ -217,6 +242,43 @@ create_ceil_floor_txt(filename, value)
  *      with two decimal digits, close, report success.
  */
 // TODO
+
+append_fmod_txt(char *filename, double x, double y)
+{
+    if(y != 0)
+    {
+
+        FILE *file;
+        file = fopen(filename, "at");
+        if (file)
+        {
+            double n1 = fmod(x, y);
+            
+            fprintf(file, "\n%.2f", n1);
+
+
+            fclose(file);
+            
+        }
+
+        else
+        {
+            printf("Error");
+            return false;
+        }
+
+    }
+
+    else
+    {
+        printf("Error");
+        return false;
+    }
+
+    return true;
+
+};
+
 
 /*
  * 8. load_txt_values (returns int; parameters: filename, double array, int max_count)
@@ -232,6 +294,41 @@ create_ceil_floor_txt(filename, value)
  */
 // TODO
 
+load_txt_values(char *filename, double array[], int max_count)
+{
+    FILE *file;
+    file = fopen(filename, "rt");
+
+    int count = 0;
+
+    if (file)
+    {
+            
+        while(count < max_count)
+        {
+            double value;
+
+            if(fscanf(file, "%lf", &value) != 1)
+            {
+                break;
+            }
+
+            array[count] = value;
+            count++;
+        }
+    }
+
+    else
+    {
+        printf("Error");
+        return -1;
+    }
+
+    fclose(file);
+    return count;
+
+};
+
 /*
  * 9. clear_file (returns bool; parameters: filename)
  *    - Think: which open mode removes all existing content
@@ -240,6 +337,13 @@ create_ceil_floor_txt(filename, value)
  *    - Report success only if both the open and the close worked.
  */
 // TODO
+
+clear_file(char *filename)
+{
+    FILE *file;
+    file = fopen(filename, "wt");
+    fclose(file);
+};
 
 
 /* ========================= PART B: Binary mode ========================= */
@@ -254,6 +358,34 @@ create_ceil_floor_txt(filename, value)
  */
 // TODO
 
+create_abs_bin(char *filename, int value)
+{
+
+    FILE *file = fopen(filename, "wb");
+    int n = abs(value);
+
+    if(file)
+    {
+        size_t res1 = fwrite(&n, sizeof(int), 1, file);
+        int res2 = fclose(file);
+
+        if(res1 == 1 && res2 == 0)
+        {
+            printf("the opperation succeeded with the element %d written", n);
+        }
+
+    }
+    
+    else
+    {
+        printf("Error");
+        return false;
+    }
+
+    return true;
+    
+};
+
 /*
  * 11. create_fabs_bin (returns bool; parameters: filename, double value)
  *     - Same idea as above, but the stored value is a double (fabs of the input).
@@ -262,6 +394,28 @@ create_ceil_floor_txt(filename, value)
  *       of size sizeof(double).
  */
 // TODO
+
+create_fabs_bin(char *filename, double value)
+{
+    FILE *file = fopen(filename, "wb");
+    double n = fabs(value);
+    
+   if(file)
+    {
+        fwrite(&n, sizeof(double), 1, file);
+        fclose(file);
+
+    }
+    
+    else
+    {
+        printf("Error");
+        return false;
+    }
+        
+
+    return true;
+};
 
 /*
  * 12. append_sqrt_bin (returns bool; parameters: filename, double value)
@@ -272,6 +426,47 @@ create_ceil_floor_txt(filename, value)
  */
 // TODO
 
+append_sqrt_bin(char *filename, double value)
+{
+
+    
+    FILE *file;
+    file = fopen(filename, "ab");
+    double n = sqrt(value);
+
+    if (value < 0)
+    {
+        printf("Invalid value");
+        return 0;
+    }
+
+    else
+    {
+        FILE *file;
+        file = fopen(filename, "ab");
+        double n = sqrt(value);
+
+        if (file)
+        {
+    
+            fwrite(&n, sizeof(double), 1, file);
+
+            fclose(file);
+        
+        }
+
+        else
+        {
+            printf("Error");
+            return 0;
+        }
+            
+    }
+   
+
+    return 1;
+};
+
 /*
  * 13. append_pow_bin (returns bool; parameters: filename, double base, double exponent)
  *     - Invalid input: base equal to zero AND exponent negative
@@ -280,6 +475,34 @@ create_ceil_floor_txt(filename, value)
  *       close, report success.
  */
 // TODO
+
+append_pow_bin(char *filename, double value, double exponent)
+{
+    FILE *file;
+    file = fopen(filename, "ab");
+    if (value == 0 && exponent < 0)
+    {
+        printf("Invalid input");
+        return false;
+    }
+
+    if (file)
+    {
+        double n = pow(value, exponent);
+
+        fwrite(&n, sizeof(double), 1, file);
+        fclose(file);
+
+        printf("the opperation succeeded with the element %.2f written", n);
+        
+    }
+    
+    else
+        printf("Error");
+        return false;
+
+    return true;
+};
 
 /*
  * 14. create_ceil_floor_bin (returns bool; parameters: filename, double value)
@@ -292,6 +515,36 @@ create_ceil_floor_txt(filename, value)
  */
 // TODO
 
+create_ceil_floor_bin(char *filename, double value)
+{
+    FILE *file;
+    file = fopen(filename, "wb");
+    if (file)
+    {
+        double n1 = ceil(value);
+        double n2 = floor(value);
+
+        double array[2] = {n1, n2};
+        
+
+        size_t res1 = fwrite(array, sizeof(double), 2, file);
+
+
+        int res2 = fclose(file);
+
+        if(res1 == 2 && res2 == 0)
+        {
+            return true;
+        }
+        
+    }
+    
+    else
+        printf("Error");
+        return false;
+
+};
+
 /*
  * 15. append_round_bin (returns bool; parameters: filename, double value)
  *     - Open in BINARY APPEND mode, write round(value) as ONE double,
@@ -300,6 +553,28 @@ create_ceil_floor_txt(filename, value)
  */
 // TODO
 
+append_round_bin(char *filename, double value)
+{
+    FILE *file;
+    file = fopen(filename, "ab");
+    if (file)
+    {
+        double n1 = round(value);
+        
+        fwrite(&n1, sizeof(double), 1, file);
+        fclose(file);
+
+        printf("\nthe opperation succeeded with the element %.2f written", n1);
+        
+    }
+    
+    else
+        printf("Error");
+        return false;
+
+    return true;
+};
+
 /*
  * 16. append_fmod_bin (returns bool; parameters: filename, double x, double y)
  *     - Invalid input: y equal to zero -> return false, do not touch the file.
@@ -307,6 +582,40 @@ create_ceil_floor_txt(filename, value)
  *       close, report success.
  */
 // TODO
+
+append_fmod_bin(char *filename, double x, double y)
+{
+    if(y != 0)
+    {
+
+        FILE *file;
+        file = fopen(filename, "at");
+        if (file)
+        {
+            double n1 = fmod(x, y);
+            
+            fwrite(&n1, sizeof(double), 1, file);
+            fclose(file);
+            
+        }
+
+        else
+        {
+            printf("Error");
+            return false;
+        }
+
+    }
+
+    else
+    {
+        printf("Error");
+        return false;
+    }
+
+    return true;
+
+};
 
 /*
  * 17. load_abs_bin (returns bool; parameters: filename, int pointer out)
@@ -319,6 +628,26 @@ create_ceil_floor_txt(filename, value)
  */
 // TODO
 
+load_abs_bin(char *filename, int *out)
+{
+
+    FILE *file = fopen(filename, "rb");
+    if (file == NULL) {
+        return false;
+    }
+
+    int res = fread(&out, sizeof(int), 1, file);
+
+    fclose(file);
+
+    if (res == 1)
+    {
+        return true;
+    }
+
+
+}
+
 /*
  * 18. load_bin_values (returns int; parameters: filename, double array, int max_count)
  *     - Open in BINARY READ mode. If it cannot be opened, return -1.
@@ -330,6 +659,32 @@ create_ceil_floor_txt(filename, value)
  *     - Close the file and return the counter.
  */
 // TODO
+
+load_bin_values(char *filename, double array[], int max_count)
+{
+    FILE *file = fopen(filename, "rb");
+    if (file == NULL) 
+    {
+        return -1;
+    }
+
+    int count = 0;
+
+    while (count < max_count) 
+    {
+
+        if (fread(&array[count], sizeof(double), 1, file) != 1) 
+        {
+
+            break;
+        }
+
+        count++;
+    }
+
+    fclose(file);
+    return count;
+}
 
 /*
  * 19. load_bin_value_at (returns bool; parameters: filename, int index, double pointer out)
@@ -345,6 +700,37 @@ create_ceil_floor_txt(filename, value)
  */
 // TODO
 
+load_bin_value_at(char *filename, int index, double *out)
+{
+    if (index < 0 || out == NULL)
+    {
+        return false;
+    }
+
+    FILE *file = fopen(filename, "rb");
+    if (file == NULL) 
+    {
+        return false;
+    }
+
+    long offset = (long)index * (long)sizeof(double);
+
+    if (fseek(file, offset, SEEK_SET) != 0) 
+    {
+        fclose(file);
+        return false;
+    }
+
+    size_t read = fread(&out, sizeof(double), 1, file);
+
+    fclose(file);
+    
+    if(read == 1)
+    {
+        return true;
+    }
+}
+
 /*
  * 20. get_file_size (returns long; parameters: filename)
  *     - Open in BINARY READ mode. If it cannot be opened, return -1.
@@ -355,3 +741,19 @@ create_ceil_floor_txt(filename, value)
  *     - Close the file and return the stored size.
  */
 // TODO
+
+get_file_size(char *filename)
+{
+    FILE *file = fopen(filename, "rb");
+    if (file == NULL) 
+    {
+        return -1;
+    }
+
+    fseek(file, 0, SEEK_END);
+    long size = ftell(file);
+    
+    fclose(file);
+    return size;
+
+}

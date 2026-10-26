@@ -79,15 +79,15 @@ append_sqrt_txt(char *filename, double value);
 
 append_pow_txt(char *filename, double value, double exponent);
 
-create_ceil_floor_txt(filename, value);
+create_ceil_floor_txt(char *filename, double value);
 
-append_round_txt(filename, value);
+append_round_txt(char *filename, double value);
 
-append_fmod_txt(filename, x, y);
+append_fmod_txt(char *filename, double x, double y);
 
-load_txt_values(filename, x, y);
+load_txt_values(char *filename, double array[], int max_count);
 
-clear_file(filename);
+clear_file(char *filename);
 
 
 /* ========================= PART B: Binary mode ========================= */
@@ -144,6 +144,28 @@ clear_file(filename);
  */
 
 /* TODO: write the prototypes for functions 10-20 here */
+
+create_abs_bin(char *filename, int value);
+
+create_fabs_bin(char *filename, double value);
+
+append_sqrt_bin(char *filename, double value);
+
+append_pow_bin(char *filename, double value, double exponent);
+
+create_ceil_floor_bin(char *filename, double value);
+
+append_round_bin(char *filename, double value);
+
+append_fmod_bin(char *filename, double x, double y);
+
+load_abs_bin(char *filename, int *out);
+
+load_bin_values(char *filename, double array[], int max_count);
+
+load_bin_value_at(char *filename, int index, double *value);
+
+get_file_size(char *filename);
 
 
 /* TODO: close the include guard here */
